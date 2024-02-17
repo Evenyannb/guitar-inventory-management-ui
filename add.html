@@ -69,13 +69,13 @@
     <body>
        
     <div class="header">
-        <h1>Guitar Inventory Management</h1>
+        <h1><a href="guitar_interface.html"> Guitar Inventory Management</a></h1>
+
     </div>
 
     <div class="nav">
         <a href="#about">About</a>
-        <a href="#add">Add</a>
-        <a href="#search">Search</a>
+        <a href="search.html">Search</a>
     </div>
 
     <div class="form-container">
@@ -106,12 +106,43 @@
     </div>
 
     <script>
-        // Add JavaScript to handle form submission here if necessary.
+        
         document.getElementById('add-guitar-form').addEventListener('submit', function(event) {
             event.preventDefault();
             
         });
     </script>
+    <script>
+        document.getElementById('add-guitar-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+        
+           
+            var serialNumber = document.getElementById('serial-number').value;
+            var price = document.getElementById('price').value;
+            var builder = document.getElementById('builder').value;
+            var model = document.getElementById('model').value;
+            var type = document.getElementById('type').value;
+            var backWood = document.getElementById('back-wood').value;
+            var topWood = document.getElementById('top-wood').value;
+        
+            
+            var guitarData = {
+                serialNumber: serialNumber,
+                price: price,
+                builder: builder,
+                model: model,
+                type: type,
+                backWood: backWood,
+                topWood: topWood
+            };
+        
+            
+            var guitarDataString = JSON.stringify(guitarData, null, 2);
+        
+            // Display the JSON string in a popup message
+            alert("You have added the following guitar data:\n" + guitarDataString);
+        });
+        </script>
     </body>
     </body>
 </html>
