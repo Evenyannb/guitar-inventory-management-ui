@@ -105,6 +105,29 @@
         </form>
     </div>
 
+
+    <script>
+    function validateForm() {
+        // Get the form and its elements
+        var form = document.getElementById('add-guitar-form');
+        var elements = form.elements;
+    
+        // Loop through the form elements
+        for (var i = 0; i < elements.length; i++) {
+            // Check if the element is an input and if it's empty
+            if (elements[i].tagName === 'INPUT' && elements[i].value.trim() === '') {
+                // Alert the user
+                alert('Please fill out all fields before submitting.');
+                // Prevent the form from being submitted
+                return false;
+            }
+        }
+    
+        // Allow the form to be submitted if all fields are filled
+        return true;
+    }
+    </script>
+
     <script>
         
         document.getElementById('add-guitar-form').addEventListener('submit', function(event) {
