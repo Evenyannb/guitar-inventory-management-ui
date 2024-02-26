@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guitar Inventory Management</title>
 <style>
- body {
+body {
         font-family: Arial, sans-serif;
         background-color: #f1c27d;
         margin: 0;
@@ -113,56 +113,71 @@
       <th>Price</th>
     </tr>
   </table>
-  <script>
-  var guitars = [
-    {serialNumber: '001', builder: 'Fender', model: 'Stratocaster', type: 'Electric', backWood: 'Alder', topWood: 'Maple', price: '1200'},
-    {serialNumber: '002', builder: 'Gibson', model: 'Les Paul', type: 'Electric', backWood: 'Mahogany', topWood: 'Maple', price: '500'},
-    {serialNumber: '003', builder: 'Fender', model: 'Les Paul', type: 'Electric', backWood: 'Maple', topWood: 'Maple', price: '2200'},
-    {serialNumber: '004', builder: 'Gibson', model: 'Stratocaster', type: 'Electric', backWood: 'Alder', topWood: 'Maple', price: '2100'},
-    {serialNumber: '005', builder: 'Fender', model: 'Les Paul', type: 'Electric', backWood: 'Mahogany', topWood: 'Alder', price: '2600'},
-    {serialNumber: '006', builder: 'Gibson', model: 'Stratocaster', type: 'Electric', backWood: 'Alder', topWood: 'Maple', price: '2500'},
-  ];
+  <script> 
+    async function searchGuitars() {
+      var builder = document.getElementById('builder').value;
+      var model = document.getElementById('model').value;
+      var type = document.getElementById('type').value;
+      var backWood = document.getElementById('back_wood').value;
+      var topWood = document.getElementById('top_wood').value;
   
-  function searchGuitars() {
-    var builder = document.getElementById('builder').value;
-    var model = document.getElementById('model').value;
-    var type = document.getElementById('type').value;
-    var backWood = document.getElementById('back wood').value;
-    var topWood = document.getElementById('top wood').value; 
+
+      var query = {
+        builder: builder,
+        model: model,
+        type: type,
+        backWood: backWood,
+        topWood: topWood
+      };
+  
     
-    var searchResults = guitars.filter(function(guitar) {
-      return (!builder || guitar.builder.includes(builder)) &&
-             (!model || guitar.model.includes(model));
-    });
-    var resultsTable = document.getElementById('resultsTable');
-  // Clear previous results
-  resultsTable.innerHTML = `
-    <tr>
-      <th>Serial number</th>
-      <th>Builder</th>
-      <th>Model</th>
-      <th>Type</th>
-      <th>Back wood</th>
-      <th>Top wood</th>
-      <th>Price</th>
-    </tr>
-  `;
+      try {
+      const response = await fetch('API-BACKEND', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+      },
+        body: JSON.stringify(query),
+      });
   
-  // Append new results
-  searchResults.forEach(function(guitar) {
-    resultsTable.innerHTML += `
-      <tr>
-        <td>${guitar.serialNumber}</td>
-        <td>${guitar.builder}</td>
-        <td>${guitar.model}</td>
-        <td>${guitar.type}</td>
-        <td>${guitar.backWood}</td>
-        <td>${guitar.topWood}</td>
-        <td>${guitar.price}</td>
-      </tr>
-    `;
-  });
-}
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const searchResults = await response.json();
+        
+      var resultsTable = document.getElementById('resultsTable');
+      resultsTable.innerHTML = `
+        <tr>
+          <th>Serial number</th>
+          <th>Builder</th>
+          <th>Model</th>
+          <th>Type</th>
+          <th>Back wood</th>
+          <th>Top wood</th>
+          <th>Price</th>
+        </tr>
+      `;
+  
+        
+      searchResults.forEach(function(guitar) {
+        resultsTable.innerHTML += `
+          <tr>
+            <td>${guitar.serialNumber}</td>
+            <td>${guitar.builder}</td>
+            <td>${guitar.model}</td>
+            <td>${guitar.type}</td>
+            <td>${guitar.backWood}</td>
+            <td>${guitar.topWood}</td>
+            <td>${guitar.price}</td>
+          </tr>
+          `;
+        });
+    } catch (error) {
+      console.error('Error:', error);
+      alert("Something went wrong. Please try again or contact the customer support team.");
+    }
+  }
 </script>
 </body>
 </html>
