@@ -104,30 +104,6 @@
             <button type="submit">Add the guitar</button>
         </form>
     </div>
-
-
-    <script>
-    function validateForm() {
-        // Get the form and its elements
-        var form = document.getElementById('add-guitar-form');
-        var elements = form.elements;
-    
-        // Loop through the form elements
-        for (var i = 0; i < elements.length; i++) {
-            // Check if the element is an input and if it's empty
-            if (elements[i].tagName === 'INPUT' && elements[i].value.trim() === '') {
-                // Alert the user
-                alert('Please fill out all fields before submitting.');
-                // Prevent the form from being submitted
-                return false;
-            }
-        }
-    
-        // Allow the form to be submitted if all fields are filled
-        return true;
-    }
-    </script>
-
     <script>
         
         document.getElementById('add-guitar-form').addEventListener('submit', function(event) {
@@ -139,7 +115,10 @@
         document.getElementById('add-guitar-form').addEventListener('submit', function(event) {
             event.preventDefault();
         
-           
+            if (!validateForm()) {
+                return; 
+            }
+
             var serialNumber = document.getElementById('serial-number').value;
             var price = document.getElementById('price').value;
             var builder = document.getElementById('builder').value;
@@ -162,10 +141,46 @@
             
             var guitarDataString = JSON.stringify(guitarData, null, 2);
         
-            // Display the JSON string in a popup message
+            //send response to backend
+            //try {
+                //const response = await fetch('API-ENDPOINT', {
+                    //method: 'POST', // or 'PUT'
+                    //headers: {
+                    //  'Content-Type': 'application/json',
+                    //},
+                    //body: JSON.stringify(guitarData),
+                //});
+        
+                //if (!response.ok) {
+                    //throw new Error('Network response was not ok');
+                //}
+        
+                //const result = await response.json();
+        
+                //alert("The guitar was added to the system");
+            //} catch (error) {
+                //console.error('Error:', error);
+                //alert("Something went wrong. Please try again or contact the customer support team.");
+            //} 
             alert("You have added the following guitar data:\n" + guitarDataString);
         });
-        </script>
+    </script>
+    <script>
+        function validateForm() {
+            var form = document.getElementById('add-guitar-form');
+            var elements = form.elements;
+    
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].tagName === 'INPUT' && elements[i].value.trim() === '') {
+                        
+                    alert('Please fill out all fields before submitting.');
+                        
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
     </body>
     </body>
 </html>
